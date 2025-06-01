@@ -34,7 +34,11 @@ import { toast } from 'sonner'
 const serverSchema = z.object({
   name: z.string().min(3, 'Server name must be at least 3 characters').max(100),
   description: z.string().min(50, 'Description must be at least 50 characters').max(2000),
-  invite_link: z.string().url('Please enter a valid Discord invite URL').includes('discord.gg', 'Must be a Discord invite link'),
+  invite_link: z.string()
+    .url('Please enter a valid Discord invite URL')
+    .refine((url) => url.includes('discord.gg'), {
+      message: 'Must be a Discord invite link'
+    }),
   language: z.string().min(1, 'Please select a language'),
   region: z.string().min(1, 'Please select a region'),
   icon_url: z.string().url('Please enter a valid URL').optional().or(z.literal('')),
